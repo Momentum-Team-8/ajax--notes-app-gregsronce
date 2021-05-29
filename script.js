@@ -2,7 +2,6 @@ const url =  'http://localhost:3000/notes'
 const form = document.querySelector('#notes-form')
 const noteList = document.querySelector('#notes-list-display')
 
-
 // Add event listener when form is submitted after a new note is written
 form.addEventListener('submit', event => {
     event.preventDefault()
@@ -11,11 +10,14 @@ form.addEventListener('submit', event => {
 })
 
 // Add event listener to delete note
-// noteList.addEventListener('click', event => {
-//     if (event.target.classList.contains('delete')) {
-//         deleteNote(event.target)
-//     }
-// })
+noteList.addEventListener('click', event => {
+    if (event.target.classList.contains('delete')) {
+        deleteNote(event.target)
+    } else if (event.target.classList.contains('edit')) {
+        editNote(event.target)
+    }
+
+})
 
 // Read data GET request
 function listNotes() {
@@ -44,17 +46,8 @@ function createNote(noteText) {
     .then(data => renderNoteItem(data))
 }
 
-// Delete data DELETE request
-// function deleteNote(element) {
-//     const noteID = element.parentElement.id
-//     fetch(url + "/" + `${noteID}`, {
-//         method: 'DELETE'
-//     })
-//     .then(() => element.parentElement.remove())
-// }
-
 function renderNoteItem(noteObject) {
-const itemEl = document.createElement('li')
+    const itemEl = document.createElement('li')
 itemEl.id = noteObject.id
 itemEl.classList.add(
     'lh-copy',
@@ -71,9 +64,20 @@ itemEl.classList.add(
         noteList.appendChild(itemEl)
 }
 
+// Delete data DELETE request -- thanks to Sara for figuring out!
+function deleteNote(element) {
+    const noteID = element.parentElement.parentElement.id
+    fetch(url + "/" + `${noteID}`, {
+        method: 'DELETE'
+    })
+    .then(() => element.parentElement.parentElement.remove())
+}
+
 function renderNoteText(noteListItem, noteObject) {
     noteListItem.innerHTML = `<span class="dib w-60">${noteObject.body}</sp><i class="ml2 dark-red fas fa-times delete"></i><i class="ml3 fas fa-edit edit"></i>`
 }
+
+// function editNote()
 
 listNotes(); 
 
