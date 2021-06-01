@@ -1,0 +1,16 @@
+#title {
+    margin-left: 20px;
+}
+
+
+
+#notes-input {
+    margin-left: 20px;
+    width: 50%;
+    
+}
+
+.delete {
+    background-color: red;
+    margin: 20px;
+}
